@@ -1,0 +1,257 @@
+:root,
+[data-theme='telegram'] {
+  --font-sans:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+
+  --background: #f4f8fb;
+  --app-background: #dcecf7;
+  --app-header: #ffffff;
+  --app-content: #f4f8fb;
+  --foreground: #14212b;
+  --card: #ffffff;
+  --card-foreground: #14212b;
+  --popover: #ffffff;
+  --popover-foreground: #14212b;
+  --primary: #2aabee;
+  --primary-foreground: #ffffff;
+  --muted: #e8f1f7;
+  --muted-foreground: #61798d;
+  --accent: #2481cc;
+  --accent-foreground: #ffffff;
+  --destructive: #d93025;
+  --border: #d9e6ef;
+  --input: #d2e2ec;
+  --ring: #2aabee;
+
+  --control: #ffffff;
+  --control-foreground: #16232d;
+  --control-border: #c8dbe8;
+  --control-muted: #eef6fb;
+  --control-focus: #2aabee;
+  --control-height: 60px;
+
+  --slider-track: #d7e8f2;
+  --slider-range: #2aabee;
+
+  --radius-control: 10px;
+  --radius-lg: 12px;
+  --radius-md: 10px;
+  --radius-sm: 8px;
+
+  --shadow-control: 0 1px 2px rgba(20, 33, 43, 0.06);
+  --shadow-popover:
+    0 14px 34px rgba(20, 33, 43, 0.14), 0 4px 10px rgba(20, 33, 43, 0.08);
+
+  --text: var(--muted-foreground);
+  --text-h: var(--foreground);
+  --bg: var(--background);
+  --code-bg: var(--muted);
+  --accent-bg: rgba(42, 171, 238, 0.1);
+  --accent-border: rgba(42, 171, 238, 0.45);
+  --social-bg: rgba(232, 241, 247, 0.62);
+  --shadow: var(--shadow-popover);
+  --sans: var(--font-sans);
+  --heading: var(--font-sans);
+  --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+[data-theme='corporate'] {
+  --background: #f6f7f9;
+  --app-background: #e4e8ef;
+  --app-header: #ffffff;
+  --app-content: #f6f7f9;
+  --foreground: #171a21;
+  --card: #ffffff;
+  --card-foreground: #171a21;
+  --popover: #ffffff;
+  --popover-foreground: #171a21;
+  --primary: #1f5fbf;
+  --primary-foreground: #ffffff;
+  --muted: #eceff3;
+  --muted-foreground: #687281;
+  --accent: #14a38b;
+  --accent-foreground: #ffffff;
+  --destructive: #c93a3a;
+  --border: #d9dde5;
+  --input: #cfd5de;
+  --ring: #1f5fbf;
+
+  --control: #ffffff;
+  --control-foreground: #171a21;
+  --control-border: #cfd5de;
+  --control-muted: #f0f3f6;
+  --control-focus: #1f5fbf;
+
+  --slider-track: #dfe4ea;
+  --slider-range: #1f5fbf;
+
+  --radius-control: 6px;
+  --radius-lg: 8px;
+  --radius-md: 6px;
+  --radius-sm: 4px;
+
+  --shadow-control: 0 1px 2px rgba(23, 26, 33, 0.05);
+  --shadow-popover:
+    0 16px 36px rgba(23, 26, 33, 0.14), 0 4px 12px rgba(23, 26, 33, 0.08);
+}
+
+[data-theme='construction'] {
+  --background: #f7f5ef;
+  --app-background: #e3d4b9;
+  --app-header: #fff9ee;
+  --app-content: #f7f1e6;
+  --foreground: #28241f;
+  --card: #fffdf7;
+  --card-foreground: #28241f;
+  --popover: #fffdf7;
+  --popover-foreground: #28241f;
+  --primary: #d18416;
+  --primary-foreground: #1f1710;
+  --muted: #ece4d6;
+  --muted-foreground: #766a5b;
+  --accent: #3f7f6f;
+  --accent-foreground: #ffffff;
+  --destructive: #b3392f;
+  --border: #ded2bd;
+  --input: #d7c7ac;
+  --ring: #d18416;
+
+  --control: #fffdf7;
+  --control-foreground: #28241f;
+  --control-border: #d1bea0;
+  --control-muted: #f1eadf;
+  --control-focus: #d18416;
+
+  --slider-track: #dfd2ba;
+  --slider-range: #d18416;
+
+  --radius-control: 8px;
+  --radius-lg: 10px;
+  --radius-md: 8px;
+  --radius-sm: 6px;
+
+  --shadow-control: 0 1px 2px rgba(40, 36, 31, 0.07);
+  --shadow-popover:
+    0 16px 36px rgba(40, 36, 31, 0.16), 0 4px 12px rgba(40, 36, 31, 0.08);
+}
+
+[data-theme='premium'] {
+  --background: #f7f6f3;
+  --app-background: #d8d0c3;
+  --app-header: #fffefa;
+  --app-content: #f3eee5;
+  --foreground: #161412;
+  --card: #fffefa;
+  --card-foreground: #161412;
+  --popover: #fffefa;
+  --popover-foreground: #161412;
+  --primary: #111111;
+  --primary-foreground: #ffffff;
+  --muted: #ece8df;
+  --muted-foreground: #6d665c;
+  --accent: #b58a35;
+  --accent-foreground: #17110a;
+  --destructive: #b5362f;
+  --border: #ddd6ca;
+  --input: #d3cabc;
+  --ring: #b58a35;
+
+  --control: #fffefa;
+  --control-foreground: #161412;
+  --control-border: #cfc4b3;
+  --control-muted: #f0ebe2;
+  --control-focus: #b58a35;
+
+  --slider-track: #dfd7c9;
+  --slider-range: #b58a35;
+
+  --radius-control: 12px;
+  --radius-lg: 14px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+
+  --shadow-control: 0 1px 2px rgba(22, 20, 18, 0.06);
+  --shadow-popover:
+    0 18px 42px rgba(22, 20, 18, 0.18), 0 5px 14px rgba(22, 20, 18, 0.09);
+}
+
+[data-theme='graphite'] {
+  --background: #0b0c18;
+  --app-background: #070813;
+  --app-header: #0b0c18;
+  --app-content: #0b0c18;
+  --foreground: #f4f1f8;
+  --card: #1d1a22;
+  --card-foreground: #f7f3fb;
+  --popover: #24212b;
+  --popover-foreground: #f7f3fb;
+  --primary: #1789ff;
+  --primary-foreground: #ffffff;
+  --muted: #20202c;
+  --muted-foreground: #a7a3af;
+  --accent: #4a8cff;
+  --accent-foreground: #ffffff;
+  --destructive: #fb7185;
+  --border: #312d3a;
+  --input: #514b5d;
+  --ring: #1789ff;
+
+  --control: #2a2630;
+  --control-foreground: #f7f3fb;
+  --control-border: #5a5365;
+  --control-muted: #23212b;
+  --control-focus: #1789ff;
+
+  --slider-track: #3b3545;
+  --slider-range: #1789ff;
+
+  --radius-control: 16px;
+  --radius-lg: 20px;
+  --radius-md: 16px;
+  --radius-sm: 12px;
+
+  --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-popover:
+    0 18px 42px rgba(0, 0, 0, 0.36), 0 5px 14px rgba(0, 0, 0, 0.24);
+}
+
+[data-theme='dark-premium'] {
+  --background: #17130d;
+  --app-background: #080604;
+  --app-header: #17130d;
+  --app-content: #100d09;
+  --foreground: #f5eee2;
+  --card: #17130d;
+  --card-foreground: #fff8ec;
+  --popover: #211a12;
+  --popover-foreground: #fff8ec;
+  --primary: #d6a84f;
+  --primary-foreground: #161007;
+  --muted: #2b2419;
+  --muted-foreground: #c3b59f;
+  --accent: #f1d08a;
+  --accent-foreground: #171007;
+  --destructive: #f87171;
+  --border: #3c3122;
+  --input: #4a3b29;
+  --ring: #d6a84f;
+
+  --control: #211a12;
+  --control-foreground: #fff8ec;
+  --control-border: #4a3b29;
+  --control-muted: #2b2419;
+  --control-focus: #d6a84f;
+
+  --slider-track: #3c3122;
+  --slider-range: #d6a84f;
+
+  --radius-control: 12px;
+  --radius-lg: 14px;
+  --radius-md: 12px;
+  --radius-sm: 10px;
+
+  --shadow-control: 0 1px 2px rgba(0, 0, 0, 0.32);
+  --shadow-popover:
+    0 20px 48px rgba(0, 0, 0, 0.42), 0 6px 16px rgba(0, 0, 0, 0.28);
+}
