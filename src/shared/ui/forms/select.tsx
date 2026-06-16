@@ -22,7 +22,7 @@ export type SelectProps = {
 export function Select({
 	name,
 	value,
-	placeholder = "Выберите значение",
+	placeholder = "",
 	options,
 	disabled,
 	error,

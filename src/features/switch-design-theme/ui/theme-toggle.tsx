@@ -1,4 +1,5 @@
 import { Moon, Sun } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/shared/lib/utils";
 
@@ -8,10 +9,12 @@ type ThemeToggleProps = {
 };
 
 export function ThemeToggle({ isDarkTheme, onToggle }: ThemeToggleProps) {
+	const { t } = useTranslation();
+
 	return (
 		<button
 			type="button"
-			aria-label={isDarkTheme ? "Включить светлую тему" : "Включить темную тему"}
+			aria-label={isDarkTheme ? t("theme.light") : t("theme.dark")}
 			onClick={onToggle}
 			className="relative flex h-8 w-14 shrink-0 items-center rounded-full border border-border bg-muted p-1 transition-colors"
 		>

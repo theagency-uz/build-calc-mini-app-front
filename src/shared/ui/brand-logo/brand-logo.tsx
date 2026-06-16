@@ -1,8 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 type BrandLogoProps = {
 	variant?: "default" | "hero";
 };
 
 export function BrandLogo({ variant = "default" }: BrandLogoProps) {
+	const { t } = useTranslation();
 	const isHero = variant === "hero";
 
 	return (
@@ -18,10 +21,10 @@ export function BrandLogo({ variant = "default" }: BrandLogoProps) {
 			</div>
 			<div className="min-w-0">
 				<p className={isHero ? "truncate text-4xl font-bold leading-none text-primary" : "truncate text-2xl font-bold leading-none text-card-foreground"}>
-					Work Life
+					{t("brand.name")}
 				</p>
 				<p className={isHero ? "mt-2 truncate text-sm font-medium text-muted-foreground" : "mt-1 truncate text-xs font-medium text-muted-foreground"}>
-					решения для профессионалов
+					{t("brand.tagline")}
 				</p>
 			</div>
 		</div>

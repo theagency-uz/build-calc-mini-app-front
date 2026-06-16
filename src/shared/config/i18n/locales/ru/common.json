@@ -1,0 +1,176 @@
+{
+  "brand": {
+    "name": "Work Life",
+    "tagline": "решения для профессионалов"
+  },
+  "language": {
+    "label": "Язык",
+    "ru": "RU",
+    "en": "EN"
+  },
+  "theme": {
+    "light": "Включить светлую тему",
+    "dark": "Включить темную тему"
+  },
+  "common": {
+    "notSelected": "Не выбрано",
+    "loadingResult": "Готовим результат..."
+  },
+  "form": {
+    "title": "Параметры материала",
+    "description": "Выберите раздел расчета, затем заполните общие и дополнительные поля.",
+    "mainParams": "Основные параметры",
+    "extraParams": "Дополнительные параметры",
+    "fields": {
+      "section": "Раздел расчета",
+      "area": "Площадь (m2)",
+      "coveringType": "Тип покрытия",
+      "baseType": "Тип основания",
+      "material": "Название материала",
+      "trowel": "Шпатель",
+      "dilution": "Разбавление",
+      "layerThickness": "Толщина слоя (мм)"
+    },
+    "placeholders": {
+      "select": "Выберите значение",
+      "section": "Выберите раздел",
+      "area": "Например: 100",
+      "coveringType": "Выберите тип покрытия",
+      "baseType": "Выберите тип основания",
+      "baseTypeDisabled": "Сначала выберите покрытие...",
+      "material": "Выберите материал",
+      "trowel": "Выберите шпатель",
+      "dilution": "Выберите разбавление",
+      "layerThickness": "Например: 8"
+    },
+    "actions": {
+      "calculate": "Рассчитать расход"
+    },
+    "validation": {
+      "areaRequired": "Введите площадь",
+      "areaPositive": "Площадь должна быть больше 0",
+      "coveringTypeRequired": "Выберите тип покрытия",
+      "baseTypeRequired": "Выберите тип основания",
+      "materialRequired": "Выберите материал",
+      "trowelRequired": "Выберите шпатель",
+      "dilutionRequired": "Выберите разбавление",
+      "layerThicknessRequired": "Введите толщину слоя"
+    }
+  },
+  "options": {
+    "sections": {
+      "all": "Все",
+      "soil": "Грунтовка",
+      "floor": "Пол",
+      "glue": "Клей"
+    },
+    "soilProducts": {
+      "primer-044": "044 Europrimer Multi",
+      "primer-045": "045 Eurobond",
+      "primer-deep": "Грунт глубокого проникновения"
+    },
+    "soilDilutions": {
+      "ready": "Готовый состав",
+      "1-1": "1:1",
+      "1-2": "1:2"
+    },
+    "soilBaseTypes": {
+      "absorbing": "Впитывающее",
+      "non-absorbing": "Не впитывающее"
+    },
+    "floorProducts": {
+      "level-300": "Наливной пол Level 300",
+      "level-500": "Ровнитель Level 500",
+      "screed-pro": "Стяжка Screed Pro"
+    },
+    "coveringTypes": {
+      "linoleum": "Линолеум",
+      "carpet": "Ковролин",
+      "vinyl": "ПВХ плитка"
+    },
+    "baseTypes": {
+      "cement-screed": "Цементная стяжка",
+      "concrete": "Бетонное основание",
+      "plywood": "Фанера",
+      "self-leveling": "Наливное основание"
+    },
+    "glueBrands": {
+      "522": "522 Eurosafe Star Tack",
+      "640": "640 Eurostar Special",
+      "628": "628 Eurostar Rapid"
+    },
+    "glueFloorBases": {
+      "concrete": {
+        "name": "Бетонное основание",
+        "primerHint": "Грунтовка: 044 Europrimer Multi"
+      },
+      "cement-screed": {
+        "name": "Цементная стяжка",
+        "primerHint": "Грунтовка: 044 Europrimer Multi или 045 Eurobond"
+      },
+      "gypsum": {
+        "name": "Гипсовое основание",
+        "primerHint": "Грунтовка: 044 Europrimer Multi"
+      }
+    },
+    "glueTrowels": {
+      "a1": "A1",
+      "a2": "A2",
+      "b1": "B1"
+    }
+  },
+  "result": {
+    "back": "Назад к расчету",
+    "ready": "Расчет готов",
+    "amountLabel": "Необходимо материала",
+    "recommended": "Рекомендуем купить",
+    "sendToBot": "Отправить в бот",
+    "sent": "Результат отправлен в Telegram бот",
+    "unavailable": "Отправка доступна, когда приложение открыто внутри Telegram.",
+    "edit": "Изменить параметры",
+    "units": {
+      "kg": "кг",
+      "l": "л",
+      "mixed": "кг/л",
+      "mm": "мм"
+    },
+    "packageUnits": {
+      "items": "позиций",
+      "buckets": "ведра",
+      "canisters": "канистры",
+      "bags": "мешков"
+    },
+    "details": {
+      "section": "Раздел расчета",
+      "area": "Площадь",
+      "coveringType": "Тип покрытия",
+      "baseType": "Тип основания",
+      "material": "Материал",
+      "trowel": "Шпатель",
+      "dilution": "Разбавление",
+      "layerThickness": "Толщина слоя"
+    },
+    "mock": {
+      "all": {
+        "title": "Комплексный расход материалов",
+        "subtitle": "Моковый расчет по всем разделам",
+        "note": "Итог объединяет моковые значения по клею, грунтовке и полу."
+      },
+      "glue": {
+        "title": "Расход клея",
+        "subtitle": "Подбор под выбранное покрытие",
+        "note": "Перед нанесением проверьте основание и выдержку грунтовки."
+      },
+      "soil": {
+        "title": "Расход грунта",
+        "subtitle": "Материал подготовлен с учетом основания",
+        "note": "Рекомендуем округлить закупку в большую сторону."
+      },
+      "floor": {
+        "title": "Расход смеси для пола",
+        "subtitle": "Расчет по площади и толщине слоя",
+        "note": "Для ровного слоя держите запас по мешкам на объекте."
+      }
+    }
+  }
+}

@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 import type { CalculationResult, CalculatorMode } from "@/entities/calculator/model";
 import {
 	calculationSections,
@@ -24,64 +26,87 @@ const isGlueIncluded = (sectionId: CalculatorMode) => sectionId === "all" || sec
 const isSoilIncluded = (sectionId: CalculatorMode) => sectionId === "all" || sectionId === "soil";
 const isFloorIncluded = (sectionId: CalculatorMode) => sectionId === "all" || sectionId === "floor";
 
-const findName = (options: MockOption[], id?: string) => options.find((item) => item.id === id)?.name ?? "Не выбрано";
+const findName = (options: MockOption[], id: string | undefined, t: TFunction) => {
+	const option = options.find((item) => item.id === id);
 
-const resultBySection: Record<CalculatorMode, Pick<CalculationResult, "title" | "subtitle" | "amount" | "unit" | "packageCount" | "packageUnit" | "note">> = {
+	if (!option) {
+		return t("common.notSelected");
+	}
+
+	return option.nameKey ? t(option.nameKey) : option.name;
+};
+
+const resultBySection: Record<
+	CalculatorMode,
+	Pick<CalculationResult, "amount" | "packageCount"> & {
+		packageUnitKey: string;
+		subtitleKey: string;
+		titleKey: string;
+		noteKey: string;
+		unitKey: string;
+	}
+> = {
 	all: {
-		title: "Комплексный расход материалов",
-		subtitle: "Моковый расчет по всем разделам",
 		amount: 445.5,
-		unit: "кг/л",
 		packageCount: 21,
-		packageUnit: "позиций",
-		note: "Итог объединяет моковые значения по клею, грунтовке и полу.",
+		packageUnitKey: "result.packageUnits.items",
+		subtitleKey: "result.mock.all.subtitle",
+		titleKey: "result.mock.all.title",
+		noteKey: "result.mock.all.note",
+		unitKey: "result.units.mixed",
 	},
 	glue: {
-		title: "Расход клея",
-		subtitle: "Подбор под выбранное покрытие",
 		amount: 12,
-		unit: "кг",
 		packageCount: 2,
-		packageUnit: "ведра",
-		note: "Перед нанесением проверьте основание и выдержку грунтовки.",
+		packageUnitKey: "result.packageUnits.buckets",
+		subtitleKey: "result.mock.glue.subtitle",
+		titleKey: "result.mock.glue.title",
+		noteKey: "result.mock.glue.note",
+		unitKey: "result.units.kg",
 	},
 	soil: {
-		title: "Расход грунта",
-		subtitle: "Материал подготовлен с учетом основания",
 		amount: 8.5,
-		unit: "л",
 		packageCount: 2,
-		packageUnit: "канистры",
-		note: "Рекомендуем округлить закупку в большую сторону.",
+		packageUnitKey: "result.packageUnits.canisters",
+		subtitleKey: "result.mock.soil.subtitle",
+		titleKey: "result.mock.soil.title",
+		noteKey: "result.mock.soil.note",
+		unitKey: "result.units.l",
 	},
 	floor: {
-		title: "Расход смеси для пола",
-		subtitle: "Расчет по площади и толщине слоя",
 		amount: 425,
-		unit: "кг",
 		packageCount: 17,
-		packageUnit: "мешков",
-		note: "Для ровного слоя держите запас по мешкам на объекте.",
+		packageUnitKey: "result.packageUnits.bags",
+		subtitleKey: "result.mock.floor.subtitle",
+		titleKey: "result.mock.floor.title",
+		noteKey: "result.mock.floor.note",
+		unitKey: "result.units.kg",
 	},
 };
 
-export const getUnifiedMockResult = (values: UnifiedCalculationValues): CalculationResult => {
+export const getUnifiedMockResult = (values: UnifiedCalculationValues, t: TFunction): CalculationResult => {
 	const sectionResult = resultBySection[values.sectionId];
 	const dynamicDetails = [
-		isGlueIncluded(values.sectionId) ? { label: "Шпатель", value: findName(glueTrowels, values.trowelId) } : null,
-		isSoilIncluded(values.sectionId) ? { label: "Разбавление", value: findName(soilDilutions, values.dilutionId) } : null,
-		isFloorIncluded(values.sectionId) ? { label: "Толщина слоя", value: `${values.layerThickness} мм` } : null,
+		isGlueIncluded(values.sectionId) ? { label: t("result.details.trowel"), value: findName(glueTrowels, values.trowelId, t) } : null,
+		isSoilIncluded(values.sectionId) ? { label: t("result.details.dilution"), value: findName(soilDilutions, values.dilutionId, t) } : null,
+		isFloorIncluded(values.sectionId) ? { label: t("result.details.layerThickness"), value: `${values.layerThickness} ${t("result.units.mm")}` } : null,
 	].filter((item): item is { label: string; value: string } => Boolean(item));
 
 	return {
 		kind: values.sectionId,
-		...sectionResult,
+		amount: sectionResult.amount,
+		packageCount: sectionResult.packageCount,
+		packageUnit: t(sectionResult.packageUnitKey),
+		subtitle: t(sectionResult.subtitleKey),
+		title: t(sectionResult.titleKey),
+		note: t(sectionResult.noteKey),
+		unit: t(sectionResult.unitKey),
 		details: [
-			{ label: "Раздел расчета", value: findName(calculationSections, values.sectionId) },
-			{ label: "Площадь", value: `${values.area} m2` },
-			{ label: "Тип покрытия", value: findName(coveringTypes, values.coveringTypeId) },
-			{ label: "Тип основания", value: findName(getBaseTypesByCovering(values.coveringTypeId), values.baseTypeId) },
-			{ label: "Материал", value: findName(materialNames, values.materialId) },
+			{ label: t("result.details.section"), value: findName(calculationSections, values.sectionId, t) },
+			{ label: t("result.details.area"), value: `${values.area} m2` },
+			{ label: t("result.details.coveringType"), value: findName(coveringTypes, values.coveringTypeId, t) },
+			{ label: t("result.details.baseType"), value: findName(getBaseTypesByCovering(values.coveringTypeId), values.baseTypeId, t) },
+			{ label: t("result.details.material"), value: findName(materialNames, values.materialId, t) },
 			...dynamicDetails,
 		],
 	};

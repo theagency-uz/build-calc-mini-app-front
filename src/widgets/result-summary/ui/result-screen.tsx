@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2, PackageCheck, Send, Sparkles } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type { CalculationResult } from "@/entities/calculator/model";
 import { sendDataToTelegramBot } from "@/shared/lib/telegram";
@@ -36,6 +37,7 @@ const useCountUp = (value: number, duration = 900) => {
 };
 
 export function ResultScreen({ result, onBack }: ResultScreenProps) {
+	const { t } = useTranslation();
 	const [sendStatus, setSendStatus] = useState<"idle" | "sent" | "unavailable">("idle");
 	const amount = useCountUp(result.amount);
 	const packages = useCountUp(result.packageCount, 700);
@@ -59,7 +61,7 @@ export function ResultScreen({ result, onBack }: ResultScreenProps) {
 		>
 			<button type="button" onClick={onBack} className="flex items-center gap-2 text-sm font-medium text-muted-foreground">
 				<ArrowLeft className="size-4" />
-				Назад к расчету
+				{t("result.back")}
 			</button>
 
 			<section className="overflow-hidden rounded-lg border border-border bg-card shadow-popover">
@@ -72,12 +74,12 @@ export function ResultScreen({ result, onBack }: ResultScreenProps) {
 						<CheckCircle2 className="size-6" />
 					</div>
 
-					<p className="text-sm font-medium text-muted-foreground">Расчет готов</p>
+					<p className="text-sm font-medium text-muted-foreground">{t("result.ready")}</p>
 					<h2 className="mt-1 text-2xl font-semibold leading-tight text-card-foreground">{result.title}</h2>
 					<p className="mt-2 text-sm leading-5 text-muted-foreground">{result.subtitle}</p>
 
 					<div className="mt-6 rounded-lg border border-border bg-background/70 p-4">
-						<p className="text-sm text-muted-foreground">Необходимо материала</p>
+						<p className="text-sm text-muted-foreground">{t("result.amountLabel")}</p>
 						<div className="mt-2 flex items-end gap-2">
 							<span className="text-5xl font-bold leading-none text-card-foreground">{amountText}</span>
 							<span className="pb-1 text-xl font-semibold text-muted-foreground">{result.unit}</span>
@@ -97,7 +99,7 @@ export function ResultScreen({ result, onBack }: ResultScreenProps) {
 						<PackageCheck className="size-5" />
 					</div>
 					<div>
-						<p className="text-sm text-muted-foreground">Рекомендуем купить</p>
+						<p className="text-sm text-muted-foreground">{t("result.recommended")}</p>
 						<p className="text-xl font-semibold text-card-foreground">
 							{Math.round(packages)} {result.packageUnit}
 						</p>
@@ -120,22 +122,20 @@ export function ResultScreen({ result, onBack }: ResultScreenProps) {
 
 			<div className="space-y-3">
 				<Button type="button" icon={Send} onClick={handleSendToBot}>
-					Отправить в бот
+					{t("result.sendToBot")}
 				</Button>
 
 				{sendStatus === "sent" ? (
-					<p className="text-center text-sm font-medium text-primary">Результат отправлен в Telegram бот</p>
+					<p className="text-center text-sm font-medium text-primary">{t("result.sent")}</p>
 				) : null}
 
 				{sendStatus === "unavailable" ? (
-					<p className="text-center text-sm leading-5 text-muted-foreground">
-						Отправка доступна, когда приложение открыто внутри Telegram.
-					</p>
+					<p className="text-center text-sm leading-5 text-muted-foreground">{t("result.unavailable")}</p>
 				) : null}
 			</div>
 
 			<Button type="button" icon={ArrowLeft} variant="secondary" onClick={onBack}>
-				Изменить параметры
+				{t("result.edit")}
 			</Button>
 		</motion.div>
 	);

@@ -1,0 +1,176 @@
+{
+  "brand": {
+    "name": "Work Life",
+    "tagline": "solutions for professionals"
+  },
+  "language": {
+    "label": "Language",
+    "ru": "RU",
+    "en": "EN"
+  },
+  "theme": {
+    "light": "Enable light theme",
+    "dark": "Enable dark theme"
+  },
+  "common": {
+    "notSelected": "Not selected",
+    "loadingResult": "Preparing result..."
+  },
+  "form": {
+    "title": "Material parameters",
+    "description": "Choose a calculation section, then fill in the main and additional fields.",
+    "mainParams": "Main parameters",
+    "extraParams": "Additional parameters",
+    "fields": {
+      "section": "Calculation section",
+      "area": "Area (m2)",
+      "coveringType": "Covering type",
+      "baseType": "Subfloor type",
+      "material": "Material name",
+      "trowel": "Trowel",
+      "dilution": "Dilution",
+      "layerThickness": "Layer thickness (mm)"
+    },
+    "placeholders": {
+      "select": "Select a value",
+      "section": "Select section",
+      "area": "Example: 100",
+      "coveringType": "Select covering type",
+      "baseType": "Select subfloor type",
+      "baseTypeDisabled": "Select covering first...",
+      "material": "Select material",
+      "trowel": "Select trowel",
+      "dilution": "Select dilution",
+      "layerThickness": "Example: 8"
+    },
+    "actions": {
+      "calculate": "Calculate consumption"
+    },
+    "validation": {
+      "areaRequired": "Enter area",
+      "areaPositive": "Area must be greater than 0",
+      "coveringTypeRequired": "Select covering type",
+      "baseTypeRequired": "Select subfloor type",
+      "materialRequired": "Select material",
+      "trowelRequired": "Select trowel",
+      "dilutionRequired": "Select dilution",
+      "layerThicknessRequired": "Enter layer thickness"
+    }
+  },
+  "options": {
+    "sections": {
+      "all": "All",
+      "soil": "Primer",
+      "floor": "Floor",
+      "glue": "Adhesive"
+    },
+    "soilProducts": {
+      "primer-044": "044 Europrimer Multi",
+      "primer-045": "045 Eurobond",
+      "primer-deep": "Deep penetration primer"
+    },
+    "soilDilutions": {
+      "ready": "Ready-to-use",
+      "1-1": "1:1",
+      "1-2": "1:2"
+    },
+    "soilBaseTypes": {
+      "absorbing": "Absorbent",
+      "non-absorbing": "Non-absorbent"
+    },
+    "floorProducts": {
+      "level-300": "Self-leveling floor Level 300",
+      "level-500": "Leveling compound Level 500",
+      "screed-pro": "Screed Pro"
+    },
+    "coveringTypes": {
+      "linoleum": "Linoleum",
+      "carpet": "Carpet",
+      "vinyl": "PVC tile"
+    },
+    "baseTypes": {
+      "cement-screed": "Cement screed",
+      "concrete": "Concrete subfloor",
+      "plywood": "Plywood",
+      "self-leveling": "Self-leveling base"
+    },
+    "glueBrands": {
+      "522": "522 Eurosafe Star Tack",
+      "640": "640 Eurostar Special",
+      "628": "628 Eurostar Rapid"
+    },
+    "glueFloorBases": {
+      "concrete": {
+        "name": "Concrete subfloor",
+        "primerHint": "Primer: 044 Europrimer Multi"
+      },
+      "cement-screed": {
+        "name": "Cement screed",
+        "primerHint": "Primer: 044 Europrimer Multi or 045 Eurobond"
+      },
+      "gypsum": {
+        "name": "Gypsum subfloor",
+        "primerHint": "Primer: 044 Europrimer Multi"
+      }
+    },
+    "glueTrowels": {
+      "a1": "A1",
+      "a2": "A2",
+      "b1": "B1"
+    }
+  },
+  "result": {
+    "back": "Back to calculation",
+    "ready": "Calculation ready",
+    "amountLabel": "Required material",
+    "recommended": "Recommended purchase",
+    "sendToBot": "Send to bot",
+    "sent": "Result sent to Telegram bot",
+    "unavailable": "Sending is available when the app is opened inside Telegram.",
+    "edit": "Edit parameters",
+    "units": {
+      "kg": "kg",
+      "l": "l",
+      "mixed": "kg/l",
+      "mm": "mm"
+    },
+    "packageUnits": {
+      "items": "items",
+      "buckets": "buckets",
+      "canisters": "canisters",
+      "bags": "bags"
+    },
+    "details": {
+      "section": "Calculation section",
+      "area": "Area",
+      "coveringType": "Covering type",
+      "baseType": "Subfloor type",
+      "material": "Material",
+      "trowel": "Trowel",
+      "dilution": "Dilution",
+      "layerThickness": "Layer thickness"
+    },
+    "mock": {
+      "all": {
+        "title": "Complete material consumption",
+        "subtitle": "Mock calculation for all sections",
+        "note": "The total combines mock values for adhesive, primer and floor materials."
+      },
+      "glue": {
+        "title": "Adhesive consumption",
+        "subtitle": "Selection based on covering type",
+        "note": "Check the subfloor and primer curing time before application."
+      },
+      "soil": {
+        "title": "Primer consumption",
+        "subtitle": "Material prepared based on subfloor type",
+        "note": "We recommend rounding the purchase up."
+      },
+      "floor": {
+        "title": "Floor compound consumption",
+        "subtitle": "Calculation based on area and layer thickness",
+        "note": "Keep extra bags on site for an even layer."
+      }
+    }
+  }
+}
