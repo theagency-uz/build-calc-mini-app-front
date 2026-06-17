@@ -5,9 +5,9 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import type { CalculationResult, CalculatorMode } from "@/entities/calculator/model";
-import { getBaseTypesByCovering, getMaterialNamesBySection } from "@/entities/product/model";
+import { getBaseTypesByCovering, getMaterialNamesBySection, getSoilDilutionByMaterial } from "@/entities/product/model";
 
-import { getUnifiedMockResult } from "../lib/mock-results";
+import { getUnifiedCalculationResult } from "../lib/mock-results";
 import type { UnifiedCalculationValues } from "../lib/mock-results";
 
 const sectionIds = ["all", "soil", "floor", "glue"] as const;
@@ -15,6 +15,7 @@ const sectionIds = ["all", "soil", "floor", "glue"] as const;
 const isGlueIncluded = (sectionId: CalculatorMode) => sectionId === "all" || sectionId === "glue";
 const isSoilIncluded = (sectionId: CalculatorMode) => sectionId === "all" || sectionId === "soil";
 const isFloorIncluded = (sectionId: CalculatorMode) => sectionId === "all" || sectionId === "floor";
+const isAllSelected = (sectionId: CalculatorMode) => sectionId === "all";
 
 export function useUnifiedCalculationForm(onCalculate: (result: CalculationResult) => void) {
 	const { t } = useTranslation();
@@ -29,12 +30,33 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 						.refine((value) => Number(value) > 0, t("form.validation.areaPositive")),
 					coveringTypeId: z.string().min(1, t("form.validation.coveringTypeRequired")),
 					baseTypeId: z.string().min(1, t("form.validation.baseTypeRequired")),
-					materialId: z.string().min(1, t("form.validation.materialRequired")),
+					materialId: z.string().optional(),
+					soilMaterialId: z.string().optional(),
+					floorMaterialId: z.string().optional(),
+					glueMaterialId: z.string().optional(),
 					trowelId: z.string().optional(),
 					dilutionId: z.string().optional(),
 					layerThickness: z.string().optional(),
 				})
 				.superRefine((values, ctx) => {
+					if (isAllSelected(values.sectionId)) {
+						if (!values.soilMaterialId) {
+							ctx.addIssue({ code: "custom", path: ["soilMaterialId"], message: t("form.validation.materialRequired") });
+						}
+
+						if (!values.floorMaterialId) {
+							ctx.addIssue({ code: "custom", path: ["floorMaterialId"], message: t("form.validation.materialRequired") });
+						}
+
+						if (!values.glueMaterialId) {
+							ctx.addIssue({ code: "custom", path: ["glueMaterialId"], message: t("form.validation.materialRequired") });
+						}
+					}
+
+					if (!isAllSelected(values.sectionId) && !values.materialId) {
+						ctx.addIssue({ code: "custom", path: ["materialId"], message: t("form.validation.materialRequired") });
+					}
+
 					if (isGlueIncluded(values.sectionId) && !values.trowelId) {
 						ctx.addIssue({ code: "custom", path: ["trowelId"], message: t("form.validation.trowelRequired") });
 					}
@@ -49,7 +71,7 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 				}),
 		[t]
 	);
-	const { control, handleSubmit, setValue, formState } = useForm<UnifiedCalculationValues>({
+	const { clearErrors, control, handleSubmit, setError, setValue, formState } = useForm<UnifiedCalculationValues>({
 		resolver: zodResolver(schema),
 		mode: "onChange",
 		defaultValues: {
@@ -58,6 +80,9 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 			coveringTypeId: "",
 			baseTypeId: "",
 			materialId: "",
+			soilMaterialId: "",
+			floorMaterialId: "",
+			glueMaterialId: "",
 			trowelId: "",
 			dilutionId: "",
 			layerThickness: "",
@@ -67,10 +92,25 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 	const coveringTypeId = useWatch({ control, name: "coveringTypeId" });
 	const baseTypeId = useWatch({ control, name: "baseTypeId" });
 	const materialId = useWatch({ control, name: "materialId" });
+	const soilMaterialId = useWatch({ control, name: "soilMaterialId" });
+	const floorMaterialId = useWatch({ control, name: "floorMaterialId" });
+	const glueMaterialId = useWatch({ control, name: "glueMaterialId" });
+	const trowelId = useWatch({ control, name: "trowelId" });
 	const area = useWatch({ control, name: "area" });
+	const isAllSection = isAllSelected(sectionId);
+	const showDilution = isSoilIncluded(sectionId);
+	const showLayerThickness = isFloorIncluded(sectionId);
+	const showTrowel = isGlueIncluded(sectionId);
 
 	const baseTypeOptions = useMemo(() => getBaseTypesByCovering(coveringTypeId), [coveringTypeId]);
-	const materialOptions = useMemo(() => getMaterialNamesBySection(sectionId), [sectionId]);
+	const materialOptions = useMemo(() => getMaterialNamesBySection(sectionId, coveringTypeId), [sectionId, coveringTypeId]);
+	const soilMaterialOptions = useMemo(() => getMaterialNamesBySection("soil", coveringTypeId), [coveringTypeId]);
+	const floorMaterialOptions = useMemo(() => getMaterialNamesBySection("floor", coveringTypeId), [coveringTypeId]);
+	const glueMaterialOptions = useMemo(() => getMaterialNamesBySection("glue", coveringTypeId), [coveringTypeId]);
+	const soilDilution = useMemo(
+		() => getSoilDilutionByMaterial(isAllSection ? soilMaterialId : materialId),
+		[isAllSection, materialId, soilMaterialId]
+	);
 
 	useEffect(() => {
 		if (baseTypeId && !baseTypeOptions.some((item) => item.id === baseTypeId)) {
@@ -82,18 +122,61 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 		if (materialId && !materialOptions.some((item) => item.id === materialId)) {
 			setValue("materialId", "", { shouldValidate: true });
 		}
-	}, [materialId, materialOptions, setValue]);
+	}, [isAllSection, materialId, materialOptions, setValue]);
+
+	useEffect(() => {
+		if (soilMaterialId && !soilMaterialOptions.some((item) => item.id === soilMaterialId)) {
+			setValue("soilMaterialId", "", { shouldValidate: true });
+		}
+	}, [setValue, soilMaterialId, soilMaterialOptions]);
+
+	useEffect(() => {
+		if (floorMaterialId && !floorMaterialOptions.some((item) => item.id === floorMaterialId)) {
+			setValue("floorMaterialId", "", { shouldValidate: true });
+		}
+	}, [floorMaterialId, floorMaterialOptions, setValue]);
+
+	useEffect(() => {
+		if (glueMaterialId && !glueMaterialOptions.some((item) => item.id === glueMaterialId)) {
+			setValue("glueMaterialId", "", { shouldValidate: true });
+		}
+	}, [glueMaterialId, glueMaterialOptions, setValue]);
+
+	useEffect(() => {
+		clearErrors("trowelId");
+	}, [baseTypeId, clearErrors, glueMaterialId, materialId, trowelId]);
+
+	useEffect(() => {
+		setValue("dilutionId", showDilution ? soilDilution?.id ?? "" : "", { shouldValidate: true });
+	}, [setValue, showDilution, soilDilution]);
+
+	const onSubmit = handleSubmit((values) => {
+		const calculation = getUnifiedCalculationResult(values, t);
+
+		if (calculation.status === "error") {
+			setError(calculation.field, { type: "manual", message: calculation.message });
+			return;
+		}
+
+		onCalculate(calculation.result);
+	});
 
 	return {
 		area,
 		baseTypeOptions,
 		control,
+		floorMaterialOptions,
+		glueMaterialOptions,
 		isBaseTypeDisabled: !coveringTypeId,
+		isAllSection,
+		isMaterialDisabled: !coveringTypeId,
 		isValid: formState.isValid,
 		materialOptions,
-		onSubmit: handleSubmit((values) => onCalculate(getUnifiedMockResult(values, t))),
-		showDilution: isSoilIncluded(sectionId),
-		showLayerThickness: isFloorIncluded(sectionId),
-		showTrowel: isGlueIncluded(sectionId),
+		onSubmit,
+		showDilution,
+		showLayerThickness,
+		showTrowel,
+		soilMaterialOptions,
+		soilDilution,
 	};
 }

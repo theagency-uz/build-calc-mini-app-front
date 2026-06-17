@@ -4,6 +4,7 @@ export {
 	floorProducts,
 	getBaseTypesByCovering,
 	getMaterialNamesBySection,
+	getSoilDilutionByMaterial,
 	glueBrands,
 	glueCoverings,
 	glueFloorBases,
@@ -13,4 +14,12 @@ export {
 	soilDilutions,
 	soilProducts,
 } from "./mock-options";
-export type { FloorBaseOption, MaterialOption, MockOption } from "./mock-options";
+export type {
+	FloorBaseOption,
+	FloorProductOption,
+	GlueBrandOption,
+	GlueConsumptionRule,
+	MaterialOption,
+	MockOption,
+	SoilProductOption,
+} from "./mock-options";

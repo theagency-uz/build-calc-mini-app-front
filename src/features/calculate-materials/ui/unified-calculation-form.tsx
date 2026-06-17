@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import type { CalculationResult } from "@/entities/calculator/model";
-import { calculationSections, coveringTypes, glueTrowels, soilDilutions } from "@/entities/product/model";
+import { calculationSections, coveringTypes, glueTrowels } from "@/entities/product/model";
 import { useUnifiedCalculationForm } from "@/features/calculate-materials/model";
 import { Button } from "@/shared/ui/button";
 import { CommonInput, Select } from "@/shared/ui/forms";
@@ -21,17 +21,27 @@ export function UnifiedCalculationForm({ onCalculate }: UnifiedCalculationFormPr
 		area,
 		baseTypeOptions,
 		control,
+		floorMaterialOptions,
+		glueMaterialOptions,
 		isBaseTypeDisabled,
+		isAllSection,
+		isMaterialDisabled,
 		isValid,
 		materialOptions,
 		onSubmit,
 		showDilution,
 		showLayerThickness,
 		showTrowel,
+		soilMaterialOptions,
+		soilDilution,
 	} = useUnifiedCalculationForm(onCalculate);
 	const hasDynamicFields = showTrowel || showDilution || showLayerThickness;
 	const translatedBaseTypeOptions = translateOptions(baseTypeOptions, t);
 	const translatedMaterialOptions = translateOptions(materialOptions, t);
+	const translatedSoilMaterialOptions = translateOptions(soilMaterialOptions, t);
+	const translatedFloorMaterialOptions = translateOptions(floorMaterialOptions, t);
+	const translatedGlueMaterialOptions = translateOptions(glueMaterialOptions, t);
+	const translatedSoilDilution = soilDilution?.nameKey ? t(soilDilution.nameKey) : soilDilution?.name ?? "";
 
 	return (
 		<form onSubmit={onSubmit} className="space-y-6 rounded-[28px] border border-border bg-card p-6 shadow-popover">
@@ -119,23 +129,85 @@ export function UnifiedCalculationForm({ onCalculate }: UnifiedCalculationFormPr
 					)}
 				/>
 
-				<Controller
-					control={control}
-					name="materialId"
-					render={({ field, fieldState }) => (
-						<FormField label={t("form.fields.material")} icon={Package} error={fieldState.error?.message}>
-							<Select
-								name={field.name}
-								value={field.value}
-								options={translatedMaterialOptions}
-								placeholder={t("form.placeholders.material")}
-								error={Boolean(fieldState.error)}
-								onChange={field.onChange}
-								onBlur={field.onBlur}
-							/>
-						</FormField>
-					)}
-				/>
+				{isAllSection ? (
+					<>
+						<Controller
+							control={control}
+							name="soilMaterialId"
+							render={({ field, fieldState }) => (
+								<FormField label={t("form.fields.soilMaterial")} icon={Package} error={fieldState.error?.message}>
+									<Select
+										name={field.name}
+										value={field.value}
+										options={translatedSoilMaterialOptions}
+										placeholder={isMaterialDisabled ? t("form.placeholders.materialDisabled") : t("form.placeholders.soilMaterial")}
+										disabled={isMaterialDisabled}
+										error={Boolean(fieldState.error)}
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+									/>
+								</FormField>
+							)}
+						/>
+
+						<Controller
+							control={control}
+							name="floorMaterialId"
+							render={({ field, fieldState }) => (
+								<FormField label={t("form.fields.floorMaterial")} icon={Package} error={fieldState.error?.message}>
+									<Select
+										name={field.name}
+										value={field.value}
+										options={translatedFloorMaterialOptions}
+										placeholder={isMaterialDisabled ? t("form.placeholders.materialDisabled") : t("form.placeholders.floorMaterial")}
+										disabled={isMaterialDisabled}
+										error={Boolean(fieldState.error)}
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+									/>
+								</FormField>
+							)}
+						/>
+
+						<Controller
+							control={control}
+							name="glueMaterialId"
+							render={({ field, fieldState }) => (
+								<FormField label={t("form.fields.glueMaterial")} icon={Package} error={fieldState.error?.message}>
+									<Select
+										name={field.name}
+										value={field.value}
+										options={translatedGlueMaterialOptions}
+										placeholder={isMaterialDisabled ? t("form.placeholders.materialDisabled") : t("form.placeholders.glueMaterial")}
+										disabled={isMaterialDisabled}
+										error={Boolean(fieldState.error)}
+										onChange={field.onChange}
+										onBlur={field.onBlur}
+									/>
+								</FormField>
+							)}
+						/>
+					</>
+				) : (
+					<Controller
+						control={control}
+						name="materialId"
+						render={({ field, fieldState }) => (
+							<FormField label={t("form.fields.material")} icon={Package} error={fieldState.error?.message}>
+								<Select
+									name={field.name}
+									value={field.value}
+									options={translatedMaterialOptions}
+									placeholder={isMaterialDisabled ? t("form.placeholders.materialDisabled") : t("form.placeholders.material")}
+									disabled={isMaterialDisabled}
+									error={Boolean(fieldState.error)}
+									onChange={field.onChange}
+									onBlur={field.onBlur}
+								/>
+							</FormField>
+						)}
+					/>
+				)}
 			</div>
 
 			{hasDynamicFields ? (
@@ -171,13 +243,12 @@ export function UnifiedCalculationForm({ onCalculate }: UnifiedCalculationFormPr
 							name="dilutionId"
 							render={({ field, fieldState }) => (
 								<FormField label={t("form.fields.dilution")} icon={Beaker} error={fieldState.error?.message}>
-									<Select
+									<CommonInput
 										name={field.name}
-										value={field.value}
-										options={translateOptions(soilDilutions, t)}
-										placeholder={t("form.placeholders.dilution")}
+										value={translatedSoilDilution}
+										placeholder={t("form.placeholders.dilutionDisabled")}
+										disabled
 										error={Boolean(fieldState.error)}
-										onChange={field.onChange}
 										onBlur={field.onBlur}
 									/>
 								</FormField>

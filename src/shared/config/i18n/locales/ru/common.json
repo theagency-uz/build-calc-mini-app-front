@@ -27,6 +27,9 @@
       "coveringType": "Тип покрытия",
       "baseType": "Тип основания",
       "material": "Название материала",
+      "soilMaterial": "Материал грунтовки",
+      "floorMaterial": "Материал пола",
+      "glueMaterial": "Материал клея",
       "trowel": "Шпатель",
       "dilution": "Разбавление",
       "layerThickness": "Толщина слоя (мм)"
@@ -39,8 +42,13 @@
       "baseType": "Выберите тип основания",
       "baseTypeDisabled": "Сначала выберите покрытие...",
       "material": "Выберите материал",
+      "materialDisabled": "Сначала выберите покрытие...",
+      "soilMaterial": "Выберите грунтовку",
+      "floorMaterial": "Выберите материал пола",
+      "glueMaterial": "Выберите клей",
       "trowel": "Выберите шпатель",
       "dilution": "Выберите разбавление",
+      "dilutionDisabled": "Заполнится после выбора материала",
       "layerThickness": "Например: 8"
     },
     "actions": {
@@ -54,7 +62,10 @@
       "materialRequired": "Выберите материал",
       "trowelRequired": "Выберите шпатель",
       "dilutionRequired": "Выберите разбавление",
-      "layerThicknessRequired": "Введите толщину слоя"
+      "layerThicknessRequired": "Введите толщину слоя",
+      "noGlueConsumptionRule": "Для выбранной комбинации нет нормы расхода",
+      "noFloorConsumptionRule": "Для выбранного материала нет нормы расхода",
+      "noSoilConsumptionRule": "Для выбранного материала нет нормы расхода"
     }
   },
   "options": {
@@ -70,9 +81,11 @@
       "primer-deep": "Грунт глубокого проникновения"
     },
     "soilDilutions": {
-      "ready": "Готовый состав",
       "1-1": "1:1",
-      "1-2": "1:2"
+      "1-2": "1:2",
+      "1-3": "1:3",
+      "1-4": "1:4",
+      "1-5": "1:5"
     },
     "soilBaseTypes": {
       "absorbing": "Впитывающее",
@@ -132,10 +145,13 @@
       "kg": "кг",
       "l": "л",
       "mixed": "кг/л",
-      "mm": "мм"
+      "mm": "мм",
+      "gramsPerM2": "г/м2",
+      "kgPerM2Mm": "кг/м2/мм"
     },
     "packageUnits": {
       "items": "позиций",
+      "packages": "упаковок",
       "buckets": "ведра",
       "canisters": "канистры",
       "bags": "мешков"
@@ -146,15 +162,26 @@
       "coveringType": "Тип покрытия",
       "baseType": "Тип основания",
       "material": "Материал",
+      "soilMaterial": "Материал грунтовки",
+      "floorMaterial": "Материал пола",
+      "glueMaterial": "Материал клея",
       "trowel": "Шпатель",
       "dilution": "Разбавление",
-      "layerThickness": "Толщина слоя"
+      "layerThickness": "Толщина слоя",
+      "consumption": "Норма расхода",
+      "readyMixture": "Готовый раствор",
+      "soilAmount": "Грунтовка",
+      "floorAmount": "Пол",
+      "glueAmount": "Клей",
+      "soilPackages": "Грунтовка к покупке",
+      "floorPackages": "Пол к покупке",
+      "gluePackages": "Клей к покупке"
     },
     "mock": {
       "all": {
         "title": "Комплексный расход материалов",
-        "subtitle": "Моковый расчет по всем разделам",
-        "note": "Итог объединяет моковые значения по клею, грунтовке и полу."
+        "subtitle": "Расчет сразу по грунтовке, полу и клею",
+        "note": "Итог объединяет рассчитанные значения по клею, грунтовке и полу."
       },
       "glue": {
         "title": "Расход клея",
