@@ -38,4 +38,3 @@ export const calculateFloor = (params: FloorCalculationParams): FloorCalculation
 		packageCount: Math.ceil(amount / DEFAULT_FLOOR_PACKAGE_WEIGHT_KG),
 	};
 };
-//
