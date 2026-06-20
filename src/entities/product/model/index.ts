@@ -1,25 +1,21 @@
 export {
 	calculationSections,
-	coveringTypes,
-	floorProducts,
+	createMaterialNames,
+	emptyProductDictionaries,
 	getBaseTypesByCovering,
 	getMaterialNamesBySection,
 	getSoilDilutionByMaterial,
-	glueBrands,
-	glueCoverings,
-	glueFloorBases,
-	glueTrowels,
-	materialNames,
-	soilBaseTypes,
-	soilDilutions,
-	soilProducts,
 } from "./mock-options";
+export { useProductDictionaries } from "./use-product-dictionaries";
 export type {
+	CoveringTypeOption,
 	FloorBaseOption,
 	FloorProductOption,
 	GlueBrandOption,
 	GlueConsumptionRule,
 	MaterialOption,
 	MockOption,
+	ProductDictionaries,
+	SoilDilutionOption,
 	SoilProductOption,
 } from "./mock-options";

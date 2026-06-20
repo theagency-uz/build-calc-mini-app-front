@@ -13,7 +13,7 @@ type MainPageHeaderProps = {
 
 export function MainPageHeader({ currentLanguage, isDarkTheme, languages, onChangeLanguage, onToggleTheme }: MainPageHeaderProps) {
 	return (
-		<header className="bg-[var(--app-header)] px-4 pb-8 pt-[calc(16px+env(safe-area-inset-top))]">
+		<header className="bg-(--app-header) px-4 pb-8 pt-[calc(16px+env(safe-area-inset-top))]">
 			<div className="mb-7 flex items-center justify-between gap-3">
 				<LanguageSwitcher currentLanguage={currentLanguage} languages={languages} onChange={onChangeLanguage} />
 				<ThemeToggle isDarkTheme={isDarkTheme} onToggle={onToggleTheme} />

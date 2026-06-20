@@ -1,12 +1,14 @@
-import { soilProducts } from "@/entities/product/model";
+import type { SoilDilutionOption, SoilProductOption } from "@/entities/product/model";
 
 const GRAMS_IN_KILOGRAM = 1000;
 const DEFAULT_SOIL_PACKAGE_WEIGHT_KG = 10;
 
 type SoilCalculationParams = {
 	area: number;
+	dilutions: SoilDilutionOption[];
 	dilutionId: string;
 	materialId: string;
+	products: SoilProductOption[];
 };
 
 type SoilCalculationResult = {
@@ -18,32 +20,44 @@ type SoilCalculationResult = {
 
 const roundToOne = (value: number) => Math.round(value * 10) / 10;
 
-const getDilutionTotalParts = (dilutionId: string) => {
+const getDilutionParts = (dilutionId: string, dilutions: SoilDilutionOption[]) => {
+	const dilution = dilutions.find((item) => item.id === dilutionId);
+
+	if (dilution) {
+		return {
+			concentrateParts: dilution.concentrateParts,
+			totalParts: dilution.concentrateParts + dilution.waterParts,
+		};
+	}
+
 	const waterParts = Number(dilutionId.replace("1-", ""));
 
 	if (!Number.isFinite(waterParts) || waterParts <= 0) {
 		return null;
 	}
 
-	return 1 + waterParts;
+	return {
+		concentrateParts: 1,
+		totalParts: 1 + waterParts,
+	};
 };
 
-export const findSoilConsumption = (materialId: string) => {
-	const material = soilProducts.find((item) => item.id === materialId);
+export const findSoilConsumption = (materialId: string, products: SoilProductOption[]) => {
+	const material = products.find((item) => item.id === materialId);
 
 	return material?.consumptionReadyGramsPerM2 ?? null;
 };
 
 export const calculateSoil = (params: SoilCalculationParams): SoilCalculationResult | null => {
-	const consumptionReadyGramsPerM2 = findSoilConsumption(params.materialId);
-	const dilutionTotalParts = getDilutionTotalParts(params.dilutionId);
+	const consumptionReadyGramsPerM2 = findSoilConsumption(params.materialId, params.products);
+	const dilutionParts = getDilutionParts(params.dilutionId, params.dilutions);
 
-	if (consumptionReadyGramsPerM2 === null || dilutionTotalParts === null) {
+	if (consumptionReadyGramsPerM2 === null || dilutionParts === null) {
 		return null;
 	}
 
 	const readyAmount = (params.area * consumptionReadyGramsPerM2) / GRAMS_IN_KILOGRAM;
-	const amount = readyAmount / dilutionTotalParts;
+	const amount = (readyAmount / dilutionParts.totalParts) * dilutionParts.concentrateParts;
 
 	return {
 		amount: roundToOne(amount),

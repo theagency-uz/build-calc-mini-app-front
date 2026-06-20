@@ -63,7 +63,7 @@
       "trowelRequired": "Select trowel",
       "dilutionRequired": "Select dilution",
       "layerThicknessRequired": "Enter layer thickness",
-      "noGlueConsumptionRule": "No consumption rate is available for the selected combination",
+      "noGlueConsumptionRule": "No adhesive consumption rate is configured for the selected subfloor and trowel",
       "noFloorConsumptionRule": "No consumption rate is available for the selected material",
       "noSoilConsumptionRule": "No consumption rate is available for the selected material"
     }
@@ -74,62 +74,6 @@
       "soil": "Primer",
       "floor": "Floor",
       "glue": "Adhesive"
-    },
-    "soilProducts": {
-      "primer-044": "044 Europrimer Multi",
-      "primer-045": "045 Eurobond",
-      "primer-deep": "Deep penetration primer"
-    },
-    "soilDilutions": {
-      "1-1": "1:1",
-      "1-2": "1:2",
-      "1-3": "1:3",
-      "1-4": "1:4",
-      "1-5": "1:5"
-    },
-    "soilBaseTypes": {
-      "absorbing": "Absorbent",
-      "non-absorbing": "Non-absorbent"
-    },
-    "floorProducts": {
-      "level-300": "Self-leveling floor Level 300",
-      "level-500": "Leveling compound Level 500",
-      "screed-pro": "Screed Pro"
-    },
-    "coveringTypes": {
-      "linoleum": "Linoleum",
-      "carpet": "Carpet",
-      "vinyl": "PVC tile"
-    },
-    "baseTypes": {
-      "cement-screed": "Cement screed",
-      "concrete": "Concrete subfloor",
-      "plywood": "Plywood",
-      "self-leveling": "Self-leveling base"
-    },
-    "glueBrands": {
-      "522": "522 Eurosafe Star Tack",
-      "640": "640 Eurostar Special",
-      "628": "628 Eurostar Rapid"
-    },
-    "glueFloorBases": {
-      "concrete": {
-        "name": "Concrete subfloor",
-        "primerHint": "Primer: 044 Europrimer Multi"
-      },
-      "cement-screed": {
-        "name": "Cement screed",
-        "primerHint": "Primer: 044 Europrimer Multi or 045 Eurobond"
-      },
-      "gypsum": {
-        "name": "Gypsum subfloor",
-        "primerHint": "Primer: 044 Europrimer Multi"
-      }
-    },
-    "glueTrowels": {
-      "a1": "A1",
-      "a2": "A2",
-      "b1": "B1"
     }
   },
   "result": {

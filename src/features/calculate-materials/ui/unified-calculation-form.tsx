@@ -3,12 +3,12 @@ import { Controller } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import type { CalculationResult } from "@/entities/calculator/model";
-import { calculationSections, coveringTypes, glueTrowels } from "@/entities/product/model";
 import { useUnifiedCalculationForm } from "@/features/calculate-materials/model";
 import { Button } from "@/shared/ui/button";
 import { CommonInput, Select } from "@/shared/ui/forms";
 import { translateOptions } from "@/shared/lib/i18n/options";
 
+import { CalculationSectionPicker } from "./calculation-section-picker";
 import { FormField } from "./form-field";
 
 type UnifiedCalculationFormProps = {
@@ -20,9 +20,12 @@ export function UnifiedCalculationForm({ onCalculate }: UnifiedCalculationFormPr
 	const {
 		area,
 		baseTypeOptions,
+		calculationSections,
 		control,
+		coveringTypes,
 		floorMaterialOptions,
 		glueMaterialOptions,
+		glueTrowels,
 		isBaseTypeDisabled,
 		isAllSection,
 		isMaterialDisabled,
@@ -55,11 +58,9 @@ export function UnifiedCalculationForm({ onCalculate }: UnifiedCalculationFormPr
 				name="sectionId"
 				render={({ field, fieldState }) => (
 					<FormField label={t("form.fields.section")} icon={Calculator} error={fieldState.error?.message}>
-						<Select
-							name={field.name}
+						<CalculationSectionPicker
 							value={field.value}
 							options={translateOptions(calculationSections, t)}
-							placeholder={t("form.placeholders.section")}
 							error={Boolean(fieldState.error)}
 							onChange={field.onChange}
 							onBlur={field.onBlur}

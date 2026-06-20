@@ -10,6 +10,13 @@ export type CalculationResult = {
 	packageCount: number;
 	packageUnit: string;
 	note: string;
+	items?: {
+		label: string;
+		amount: number;
+		unit: string;
+		packageCount: number;
+		packageUnit: string;
+	}[];
 	details: {
 		label: string;
 		value: string;

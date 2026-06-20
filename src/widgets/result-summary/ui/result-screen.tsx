@@ -36,12 +36,33 @@ const useCountUp = (value: number, duration = 900) => {
 	return count;
 };
 
+function CountUpValue({ value }: { value: number }) {
+	const count = useCountUp(value);
+
+	return Number.isInteger(value) ? Math.round(count) : count.toFixed(1);
+}
+
+function ResultAmountCard({ amount, label, unit }: { amount: number; label: string; unit: string }) {
+	return (
+		<div className="rounded-lg border border-border bg-background/70 p-4">
+			<p className="text-sm text-muted-foreground">{label}</p>
+			<div className="mt-2 flex items-end gap-2">
+				<span className="text-4xl font-bold leading-none text-card-foreground">
+					<CountUpValue value={amount} />
+				</span>
+				<span className="pb-1 text-lg font-semibold text-muted-foreground">{unit}</span>
+			</div>
+		</div>
+	);
+}
+
 export function ResultScreen({ result, onBack }: ResultScreenProps) {
 	const { t } = useTranslation();
 	const [sendStatus, setSendStatus] = useState<"idle" | "sent" | "unavailable">("idle");
 	const amount = useCountUp(result.amount);
 	const packages = useCountUp(result.packageCount, 700);
 	const amountText = Number.isInteger(result.amount) ? Math.round(amount) : amount.toFixed(1);
+	const hasResultItems = Boolean(result.items?.length);
 
 	const handleSendToBot = () => {
 		const isSent = sendDataToTelegramBot({
@@ -78,13 +99,21 @@ export function ResultScreen({ result, onBack }: ResultScreenProps) {
 					<h2 className="mt-1 text-2xl font-semibold leading-tight text-card-foreground">{result.title}</h2>
 					<p className="mt-2 text-sm leading-5 text-muted-foreground">{result.subtitle}</p>
 
-					<div className="mt-6 rounded-lg border border-border bg-background/70 p-4">
-						<p className="text-sm text-muted-foreground">{t("result.amountLabel")}</p>
-						<div className="mt-2 flex items-end gap-2">
-							<span className="text-5xl font-bold leading-none text-card-foreground">{amountText}</span>
-							<span className="pb-1 text-xl font-semibold text-muted-foreground">{result.unit}</span>
+					{hasResultItems ? (
+						<div className="mt-6 grid gap-3">
+							{result.items?.map((item) => (
+								<ResultAmountCard key={item.label} label={item.label} amount={item.amount} unit={item.unit} />
+							))}
 						</div>
-					</div>
+					) : (
+						<div className="mt-6 rounded-lg border border-border bg-background/70 p-4">
+							<p className="text-sm text-muted-foreground">{t("result.amountLabel")}</p>
+							<div className="mt-2 flex items-end gap-2">
+								<span className="text-5xl font-bold leading-none text-card-foreground">{amountText}</span>
+								<span className="pb-1 text-xl font-semibold text-muted-foreground">{result.unit}</span>
+							</div>
+						</div>
+					)}
 				</div>
 			</section>
 
@@ -100,9 +129,19 @@ export function ResultScreen({ result, onBack }: ResultScreenProps) {
 					</div>
 					<div>
 						<p className="text-sm text-muted-foreground">{t("result.recommended")}</p>
-						<p className="text-xl font-semibold text-card-foreground">
-							{Math.round(packages)} {result.packageUnit}
-						</p>
+						{hasResultItems ? (
+							<div className="mt-1 space-y-1">
+								{result.items?.map((item) => (
+									<p key={item.label} className="text-sm font-semibold text-card-foreground">
+										{item.label}: {item.packageCount} {item.packageUnit}
+									</p>
+								))}
+							</div>
+						) : (
+							<p className="text-xl font-semibold text-card-foreground">
+								{Math.round(packages)} {result.packageUnit}
+							</p>
+						)}
 					</div>
 				</div>
 			</motion.section>

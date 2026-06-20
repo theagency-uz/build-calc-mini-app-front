@@ -1,15 +1,8 @@
 import type { TFunction } from "i18next";
 
 import type { CalculationResult, CalculatorMode } from "@/entities/calculator/model";
-import {
-	calculationSections,
-	coveringTypes,
-	getBaseTypesByCovering,
-	materialNames,
-	soilDilutions,
-	glueTrowels,
-} from "@/entities/product/model";
-import type { MockOption } from "@/entities/product/model";
+import { getBaseTypesByCovering } from "@/entities/product/model";
+import type { MockOption, ProductDictionaries } from "@/entities/product/model";
 
 import { calculateFloor } from "./calculate-floor";
 import { calculateGlue } from "./calculate-glue";
@@ -95,39 +88,48 @@ const resultMetaBySection: Record<
 	},
 };
 
-export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t: TFunction): UnifiedCalculationResult => {
+export const getUnifiedCalculationResult = (
+	values: UnifiedCalculationValues,
+	t: TFunction,
+	dictionaries: ProductDictionaries
+): UnifiedCalculationResult => {
 	const sectionResult = resultMetaBySection[values.sectionId];
 	const dynamicDetails = [
-		isGlueIncluded(values.sectionId) ? { label: t("result.details.trowel"), value: findName(glueTrowels, values.trowelId, t) } : null,
-		isSoilIncluded(values.sectionId) ? { label: t("result.details.dilution"), value: findName(soilDilutions, values.dilutionId, t) } : null,
+		isGlueIncluded(values.sectionId) ? { label: t("result.details.trowel"), value: findName(dictionaries.glueTrowels, values.trowelId, t) } : null,
+		isSoilIncluded(values.sectionId) ? { label: t("result.details.dilution"), value: findName(dictionaries.soilDilutions, values.dilutionId, t) } : null,
 		isFloorIncluded(values.sectionId) ? { label: t("result.details.layerThickness"), value: `${values.layerThickness} ${t("result.units.mm")}` } : null,
 	].filter((item): item is { label: string; value: string } => Boolean(item));
 	const materialDetails =
 		values.sectionId === "all"
 			? [
-					{ label: t("result.details.soilMaterial"), value: findName(materialNames, values.soilMaterialId, t) },
-					{ label: t("result.details.floorMaterial"), value: findName(materialNames, values.floorMaterialId, t) },
-					{ label: t("result.details.glueMaterial"), value: findName(materialNames, values.glueMaterialId, t) },
+					{ label: t("result.details.soilMaterial"), value: findName(dictionaries.materialNames, values.soilMaterialId, t) },
+					{ label: t("result.details.floorMaterial"), value: findName(dictionaries.materialNames, values.floorMaterialId, t) },
+					{ label: t("result.details.glueMaterial"), value: findName(dictionaries.materialNames, values.glueMaterialId, t) },
 				]
-			: [{ label: t("result.details.material"), value: findName(materialNames, values.materialId, t) }];
+			: [{ label: t("result.details.material"), value: findName(dictionaries.materialNames, values.materialId, t) }];
 	let amount = 0;
 	let packageCount = 0;
+	let items: CalculationResult["items"];
 
 	if (values.sectionId === "all") {
 		const soilResult = calculateSoil({
 			area: Number(values.area),
+			dilutions: dictionaries.soilDilutions,
 			dilutionId: values.dilutionId ?? "",
 			materialId: values.soilMaterialId ?? "",
+			products: dictionaries.soilProducts,
 		});
 		const floorResult = calculateFloor({
 			area: Number(values.area),
 			layerThickness: Number(values.layerThickness),
 			materialId: values.floorMaterialId ?? "",
+			products: dictionaries.floorProducts,
 		});
 		const glueResult = calculateGlue({
 			area: Number(values.area),
 			baseTypeId: values.baseTypeId,
 			materialId: values.glueMaterialId ?? "",
+			products: dictionaries.glueBrands,
 			trowelId: values.trowelId ?? "",
 		});
 
@@ -157,6 +159,29 @@ export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t:
 
 		amount = roundToOne(soilResult.amount + floorResult.amount + glueResult.amount);
 		packageCount = soilResult.packageCount + floorResult.packageCount + glueResult.packageCount;
+		items = [
+			{
+				label: t("result.details.soilAmount"),
+				amount: soilResult.amount,
+				unit: t("result.units.kg"),
+				packageCount: soilResult.packageCount,
+				packageUnit: t("result.packageUnits.canisters"),
+			},
+			{
+				label: t("result.details.floorAmount"),
+				amount: floorResult.amount,
+				unit: t("result.units.kg"),
+				packageCount: floorResult.packageCount,
+				packageUnit: t("result.packageUnits.bags"),
+			},
+			{
+				label: t("result.details.glueAmount"),
+				amount: glueResult.amount,
+				unit: t("result.units.kg"),
+				packageCount: glueResult.packageCount,
+				packageUnit: t("result.packageUnits.buckets"),
+			},
+		];
 		dynamicDetails.push(
 			{
 				label: t("result.details.soilAmount"),
@@ -194,6 +219,7 @@ export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t:
 			area: Number(values.area),
 			baseTypeId: values.baseTypeId,
 			materialId: values.materialId ?? "",
+			products: dictionaries.glueBrands,
 			trowelId: values.trowelId ?? "",
 		});
 
@@ -218,6 +244,7 @@ export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t:
 			area: Number(values.area),
 			layerThickness: Number(values.layerThickness),
 			materialId: values.materialId ?? "",
+			products: dictionaries.floorProducts,
 		});
 
 		if (!floorResult) {
@@ -239,8 +266,10 @@ export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t:
 	if (values.sectionId === "soil") {
 		const soilResult = calculateSoil({
 			area: Number(values.area),
+			dilutions: dictionaries.soilDilutions,
 			dilutionId: values.dilutionId ?? "",
 			materialId: values.materialId ?? "",
+			products: dictionaries.soilProducts,
 		});
 
 		if (!soilResult) {
@@ -270,6 +299,7 @@ export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t:
 		result: {
 			kind: values.sectionId,
 			amount,
+			items,
 			packageCount,
 			packageUnit: t(sectionResult.packageUnitKey),
 			subtitle: t(sectionResult.subtitleKey),
@@ -277,10 +307,10 @@ export const getUnifiedCalculationResult = (values: UnifiedCalculationValues, t:
 			note: t(sectionResult.noteKey),
 			unit: t(sectionResult.unitKey),
 			details: [
-				{ label: t("result.details.section"), value: findName(calculationSections, values.sectionId, t) },
+				{ label: t("result.details.section"), value: findName(dictionaries.calculationSections, values.sectionId, t) },
 				{ label: t("result.details.area"), value: `${values.area} m2` },
-				{ label: t("result.details.coveringType"), value: findName(coveringTypes, values.coveringTypeId, t) },
-				{ label: t("result.details.baseType"), value: findName(getBaseTypesByCovering(values.coveringTypeId), values.baseTypeId, t) },
+				{ label: t("result.details.coveringType"), value: findName(dictionaries.coveringTypes, values.coveringTypeId, t) },
+				{ label: t("result.details.baseType"), value: findName(getBaseTypesByCovering(values.coveringTypeId, dictionaries.coveringTypes), values.baseTypeId, t) },
 				...materialDetails,
 				...dynamicDetails,
 			],

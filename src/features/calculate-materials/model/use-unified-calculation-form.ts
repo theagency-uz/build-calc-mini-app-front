@@ -5,10 +5,10 @@ import { useTranslation } from "react-i18next";
 import { z } from "zod";
 
 import type { CalculationResult, CalculatorMode } from "@/entities/calculator/model";
-import { getBaseTypesByCovering, getMaterialNamesBySection, getSoilDilutionByMaterial } from "@/entities/product/model";
+import { getBaseTypesByCovering, getMaterialNamesBySection, getSoilDilutionByMaterial, useProductDictionaries } from "@/entities/product/model";
 
-import { getUnifiedCalculationResult } from "../lib/mock-results";
-import type { UnifiedCalculationValues } from "../lib/mock-results";
+import { getUnifiedCalculationResult } from "../lib/calculation-result";
+import type { UnifiedCalculationValues } from "../lib/calculation-result";
 
 const sectionIds = ["all", "soil", "floor", "glue"] as const;
 
@@ -19,6 +19,7 @@ const isAllSelected = (sectionId: CalculatorMode) => sectionId === "all";
 
 export function useUnifiedCalculationForm(onCalculate: (result: CalculationResult) => void) {
 	const { t } = useTranslation();
+	const { dictionaries, isError, isLoading } = useProductDictionaries();
 	const schema = useMemo(
 		() =>
 			z
@@ -102,14 +103,26 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 	const showLayerThickness = isFloorIncluded(sectionId);
 	const showTrowel = isGlueIncluded(sectionId);
 
-	const baseTypeOptions = useMemo(() => getBaseTypesByCovering(coveringTypeId), [coveringTypeId]);
-	const materialOptions = useMemo(() => getMaterialNamesBySection(sectionId, coveringTypeId), [sectionId, coveringTypeId]);
-	const soilMaterialOptions = useMemo(() => getMaterialNamesBySection("soil", coveringTypeId), [coveringTypeId]);
-	const floorMaterialOptions = useMemo(() => getMaterialNamesBySection("floor", coveringTypeId), [coveringTypeId]);
-	const glueMaterialOptions = useMemo(() => getMaterialNamesBySection("glue", coveringTypeId), [coveringTypeId]);
+	const baseTypeOptions = useMemo(() => getBaseTypesByCovering(coveringTypeId, dictionaries.coveringTypes), [coveringTypeId, dictionaries.coveringTypes]);
+	const materialOptions = useMemo(
+		() => getMaterialNamesBySection(sectionId, coveringTypeId, dictionaries.materialNames),
+		[coveringTypeId, dictionaries.materialNames, sectionId]
+	);
+	const soilMaterialOptions = useMemo(
+		() => getMaterialNamesBySection("soil", coveringTypeId, dictionaries.materialNames),
+		[coveringTypeId, dictionaries.materialNames]
+	);
+	const floorMaterialOptions = useMemo(
+		() => getMaterialNamesBySection("floor", coveringTypeId, dictionaries.materialNames),
+		[coveringTypeId, dictionaries.materialNames]
+	);
+	const glueMaterialOptions = useMemo(
+		() => getMaterialNamesBySection("glue", coveringTypeId, dictionaries.materialNames),
+		[coveringTypeId, dictionaries.materialNames]
+	);
 	const soilDilution = useMemo(
-		() => getSoilDilutionByMaterial(isAllSection ? soilMaterialId : materialId),
-		[isAllSection, materialId, soilMaterialId]
+		() => getSoilDilutionByMaterial(isAllSection ? soilMaterialId : materialId, dictionaries.soilProducts, dictionaries.soilDilutions),
+		[dictionaries.soilDilutions, dictionaries.soilProducts, isAllSection, materialId, soilMaterialId]
 	);
 
 	useEffect(() => {
@@ -151,7 +164,7 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 	}, [setValue, showDilution, soilDilution]);
 
 	const onSubmit = handleSubmit((values) => {
-		const calculation = getUnifiedCalculationResult(values, t);
+		const calculation = getUnifiedCalculationResult(values, t, dictionaries);
 
 		if (calculation.status === "error") {
 			setError(calculation.field, { type: "manual", message: calculation.message });
@@ -164,11 +177,16 @@ export function useUnifiedCalculationForm(onCalculate: (result: CalculationResul
 	return {
 		area,
 		baseTypeOptions,
+		calculationSections: dictionaries.calculationSections,
 		control,
+		coveringTypes: dictionaries.coveringTypes,
 		floorMaterialOptions,
 		glueMaterialOptions,
+		glueTrowels: dictionaries.glueTrowels,
 		isBaseTypeDisabled: !coveringTypeId,
 		isAllSection,
+		isDictionariesError: isError,
+		isDictionariesLoading: isLoading,
 		isMaterialDisabled: !coveringTypeId,
 		isValid: formState.isValid,
 		materialOptions,

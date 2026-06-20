@@ -63,7 +63,7 @@
       "trowelRequired": "Выберите шпатель",
       "dilutionRequired": "Выберите разбавление",
       "layerThicknessRequired": "Введите толщину слоя",
-      "noGlueConsumptionRule": "Для выбранной комбинации нет нормы расхода",
+      "noGlueConsumptionRule": "В админке не задана норма расхода клея для выбранных основания и шпателя",
       "noFloorConsumptionRule": "Для выбранного материала нет нормы расхода",
       "noSoilConsumptionRule": "Для выбранного материала нет нормы расхода"
     }
@@ -74,62 +74,6 @@
       "soil": "Грунтовка",
       "floor": "Пол",
       "glue": "Клей"
-    },
-    "soilProducts": {
-      "primer-044": "044 Europrimer Multi",
-      "primer-045": "045 Eurobond",
-      "primer-deep": "Грунт глубокого проникновения"
-    },
-    "soilDilutions": {
-      "1-1": "1:1",
-      "1-2": "1:2",
-      "1-3": "1:3",
-      "1-4": "1:4",
-      "1-5": "1:5"
-    },
-    "soilBaseTypes": {
-      "absorbing": "Впитывающее",
-      "non-absorbing": "Не впитывающее"
-    },
-    "floorProducts": {
-      "level-300": "Наливной пол Level 300",
-      "level-500": "Ровнитель Level 500",
-      "screed-pro": "Стяжка Screed Pro"
-    },
-    "coveringTypes": {
-      "linoleum": "Линолеум",
-      "carpet": "Ковролин",
-      "vinyl": "ПВХ плитка"
-    },
-    "baseTypes": {
-      "cement-screed": "Цементная стяжка",
-      "concrete": "Бетонное основание",
-      "plywood": "Фанера",
-      "self-leveling": "Наливное основание"
-    },
-    "glueBrands": {
-      "522": "522 Eurosafe Star Tack",
-      "640": "640 Eurostar Special",
-      "628": "628 Eurostar Rapid"
-    },
-    "glueFloorBases": {
-      "concrete": {
-        "name": "Бетонное основание",
-        "primerHint": "Грунтовка: 044 Europrimer Multi"
-      },
-      "cement-screed": {
-        "name": "Цементная стяжка",
-        "primerHint": "Грунтовка: 044 Europrimer Multi или 045 Eurobond"
-      },
-      "gypsum": {
-        "name": "Гипсовое основание",
-        "primerHint": "Грунтовка: 044 Europrimer Multi"
-      }
-    },
-    "glueTrowels": {
-      "a1": "A1",
-      "a2": "A2",
-      "b1": "B1"
     }
   },
   "result": {
